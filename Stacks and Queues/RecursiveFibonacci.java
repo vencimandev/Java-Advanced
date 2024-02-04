@@ -1,32 +1,39 @@
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class RecursiveFibonacci {
+    // HashMap for memoization
+    private static HashMap<Integer, Long> memo = new HashMap<>();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Read the input (nth Fibonacci number)
         int n = scanner.nextInt();
 
-        // Calculate and print the nth Fibonacci number
-        int result = getFibonacci(n);
+        long result = getFibonacci(n);
         System.out.println(result);
+
+        // Close the scanner
+        scanner.close();
     }
 
-    private static int getFibonacci(int n) {
+    private static long getFibonacci(int n) {
+        // Base cases
         if (n <= 1) {
             return 1;
         }
 
-        int prev = 1;
-        int curr = 1;
-
-        for (int i = 2; i <= n; i++) {
-            int next = prev + curr;
-            prev = curr;
-            curr = next;
+        // Check if the result is already memoized
+        if (memo.containsKey(n)) {
+            return memo.get(n);
         }
 
-        return curr;
+        // Recursive calculation
+        long fib = getFibonacci(n - 1) + getFibonacci(n - 2);
+
+        // Memoize the result
+        memo.put(n, fib);
+
+        return fib;
     }
 }
